@@ -7,7 +7,7 @@
     "build": "tsc --project tsconfig.production.json",
     "build:demo": "vue-cli-service build --dest example/dist",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint example/src/** src/** --fix"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -24,12 +24,15 @@
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
     "@vue/eslint-config-airbnb": "^5.0.2",
+    "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
     "@vue/test-utils": "^2.0.0-0",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^7.0.0",
     "lint-staged": "^9.5.0",
+    "prettier": "^2.2.1",
     "typescript": "~4.1.5",
     "vue-jest": "^5.0.0-0"
   },
