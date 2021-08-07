@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "strict": true,
+    "allowJs": true,
+    "declaration": true,
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
@@ -25,16 +24,20 @@
       "dom",
       "dom.iterable",
       "scripthost"
-    ]
+    ],  
+     "outDir": "./build",
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "tests/**/*.tsx",
+    "example/**/*.ts",
+    "example/**/*.tsx",
+    "example/**/*.vue",    
   ],
   "exclude": [
     "node_modules"
-  ]
+  ]  
 }

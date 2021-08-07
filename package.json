@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --dest example/dist",
+    "build": "tsc --project tsconfig.production.json",
+    "build:demo": "vue-cli-service build --dest example/dist",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
