@@ -27,6 +27,7 @@
       "scripthost"
     ],  
      "outDir": "./build",
+     "importsNotUsedAsValues": "preserve"
   },
   "include": [
     "src/**/*.ts",
