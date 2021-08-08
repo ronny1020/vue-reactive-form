@@ -1,3 +1,3 @@
-const a = 0
+const inputTest = 'test'
 
-console.log(a)
+export default inputTest

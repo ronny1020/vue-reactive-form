@@ -87,5 +87,9 @@ module.exports = {
         jest: true,
       },
     },
+    {
+      files: ['*.html'],
+      processor: 'vue/.vue',
+    },
   ],
 }
