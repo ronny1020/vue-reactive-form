@@ -44,5 +44,11 @@
       "vue-cli-service lint",
       "git add"
     ]
-  }
+  },
+  "directories": {
+    "example": "example"
+  },
+  "files": [
+    "build"
+  ]
 }

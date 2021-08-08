@@ -3,6 +3,7 @@
     "allowJs": true,
     "declaration": true,
     "jsx": "preserve",
+    "target": "ESNEXT",       
     "importHelpers": true,
     "moduleResolution": "node",
     "skipLibCheck": true,
@@ -39,5 +40,8 @@
   ],
   "exclude": [
     "node_modules"
-  ]  
+  ],
+  "directories": {
+    "example": "example"
+  },
 }

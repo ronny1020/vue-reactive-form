@@ -2,16 +2,16 @@
   <div class="container">
     <form>
       <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Email address</label>
-        <input id="exampleInputEmail1" v-model="email" type="input" class="form-control" />
+        <label for="email" class="form-label">Email address</label>
+        <input id="email" v-model="email" type="input" class="form-control" />
       </div>
       <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input id="exampleInputPassword1" type="password" class="form-control" />
+        <label for="password" class="form-label">Password</label>
+        <input id="password" v-model="password" type="password" class="form-control" />
       </div>
       <div class="mb-3 form-check">
-        <input id="exampleCheck1" type="checkbox" class="form-check-input" />
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        <input id="check" v-model="readMe" type="checkbox" class="form-check-input" />
+        <label class="form-check-label" for="check">remember me</label>
       </div>
       <button type="submit" class="btn btn-primary" @click.prevent="handleClick()">Submit</button>
     </form>
@@ -19,20 +19,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import inputTest from '../../src'
+import ReactiveForm from '@/reactiveForm/reactiveForm'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'App',
 
   setup() {
-    const email = ref<string>(inputTest)
+    const form = new ReactiveForm({
+      email: { value: '' },
+      password: { value: '' },
+      readMe: { value: false },
+    })
 
     function handleClick() {
-      console.log(email.value)
+      console.log(form.value)
     }
 
-    return { email, handleClick }
+    return { ...form.refs, handleClick }
   },
 })
 </script>

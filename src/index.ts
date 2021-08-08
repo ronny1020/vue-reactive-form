@@ -1,3 +1,3 @@
-const inputTest = 'test'
+import reactiveForm from './reactiveForm/reactiveForm'
 
-export default inputTest
+export default reactiveForm
