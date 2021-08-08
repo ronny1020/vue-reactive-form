@@ -33,7 +33,7 @@ export default defineComponent({
     })
 
     function handleClick() {
-      console.log(form.value)
+      console.log(form.controls)
     }
 
     return { ...form.refs, handleClick }
