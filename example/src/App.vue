@@ -4,6 +4,7 @@
       <div class="mb-3">
         <label for="email" class="form-label">Email address</label>
         <input id="email" v-model="email" type="input" class="form-control" />
+        {{ email }}
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
@@ -19,21 +20,23 @@
 </template>
 
 <script lang="ts">
-import ReactiveForm from '@/reactiveForm/reactiveForm'
 import { defineComponent } from 'vue'
+import FormGroup from '@/index'
 
 export default defineComponent({
   name: 'App',
 
   setup() {
-    const form = new ReactiveForm({
+    const form = new FormGroup({
       email: { value: '' },
       password: { value: '' },
       readMe: { value: false },
     })
 
     function handleClick() {
-      console.log(form.controls)
+      console.log(form.value.value)
+
+      console.log(form)
     }
 
     return { ...form.refs, handleClick }

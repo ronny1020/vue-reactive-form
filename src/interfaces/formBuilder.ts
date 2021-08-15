@@ -1,4 +1,4 @@
-import { Ref } from 'vue'
+import { WritableComputedRef } from '@vue/runtime-core'
 
 export type InputValueType = string | number | boolean
 export interface InputBuilder {
@@ -11,10 +11,4 @@ export type FormValue<T extends FormBuilder> = {
   [K in keyof T]: T[K]['value']
 }
 
-export type FormRefs<T extends FormBuilder> = {
-  [K in keyof T]: Ref<T[K]['value']>
-}
-
-export type FormControls<T extends FormBuilder> = {
-  [K in keyof T]: { value: T[K]['value'] }
-}
+export type FormRefs<T extends FormBuilder> = { [K in keyof T]: WritableComputedRef<T[K]['value']> }
