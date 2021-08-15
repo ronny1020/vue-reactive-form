@@ -1,5 +1,5 @@
-import reactiveForm from './reactiveForm/formGroup'
-import reactiveFormControl from './reactiveForm/formControl'
+import FormGroup from './reactiveForm/formGroup'
+import FormControl from './reactiveForm/formControl'
 
-export default reactiveForm
-export { reactiveFormControl }
+export default FormGroup
+export { FormControl }

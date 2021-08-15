@@ -2,7 +2,7 @@ import { computed, ComputedRef } from 'vue'
 import { FormRefs, FormValue, InputBuilder } from '../interfaces/formBuilder'
 import FormControl from './formControl'
 
-export default class ReactiveForm<T extends Record<string, InputBuilder>> {
+export default class FormGroup<T extends Record<string, InputBuilder>> {
   controls: { [K in keyof T]: FormControl<T[K]> }
 
   refs: FormRefs<T>
