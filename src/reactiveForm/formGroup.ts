@@ -40,6 +40,10 @@ export default class FormGroup<T extends FormBuilder> {
       ) as FormValue<T>
   )
 
+  dirty: ComputedRef<boolean> = computed(() =>
+    Object.values(this.controls).some((control) => control.Dirty)
+  )
+
   constructor(private formBuilders: T) {
     this.controls = createFormControls(formBuilders)
 
@@ -63,5 +67,17 @@ export default class FormGroup<T extends FormBuilder> {
         }
       )
     ) as FormRefs<T>
+  }
+
+  markAsDirty(): void {
+    Object.values(this.controls).forEach(
+      (control: FormControl<InputBuilder> | FormGroup<FormBuilder>) => control.markAsDirty()
+    )
+  }
+
+  markAsPristine(): void {
+    Object.values(this.controls).forEach(
+      (control: FormControl<InputBuilder> | FormGroup<FormBuilder>) => control.markAsPristine()
+    )
   }
 }
