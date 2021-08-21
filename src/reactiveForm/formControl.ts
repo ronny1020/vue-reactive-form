@@ -18,11 +18,7 @@ function createFormControlRef<T extends InputValueType>(defaultValue: T): Ref<T>
 export default class FormControl<T extends InputBuilder> {
   ref: Ref<T['value']>
 
-  value: T['value']
-
   constructor(private inputBuilder: InputBuilder) {
-    this.value = inputBuilder.value
-
     this.ref = createFormControlRef(inputBuilder.value)
   }
 }

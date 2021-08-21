@@ -27,12 +27,12 @@ export default class FormGroup<T extends FormBuilder> {
 
   refs: FormRefs<T>
 
-  value: ComputedRef<FormValue<T>> = computed(
+  values: ComputedRef<FormValue<T>> = computed(
     () =>
       Object.fromEntries(
         Object.entries(this.controls).map(([key, control]) => {
           if (control instanceof FormGroup) {
-            return [key, control.value.value]
+            return [key, control.values.value]
           }
 
           return [key, control.ref.value]

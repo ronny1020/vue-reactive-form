@@ -13,4 +13,10 @@ export type FormValue<T extends FormBuilder> = {
   [K in keyof T]: T[K]['value']
 }
 
-export type FormRefs<T extends FormBuilder> = { [K in keyof T]: WritableComputedRef<T[K]['value']> }
+export type FormRefs<T extends FormBuilder> = {
+  [K in keyof T]: T[K] extends InputBuilder
+    ? WritableComputedRef<T[K]['value']>
+    : T[K] extends FormBuilder
+    ? FormRefs<T[K]>
+    : never
+}

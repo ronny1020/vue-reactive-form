@@ -3,16 +3,20 @@
     <form>
       <div class="mb-3">
         <label for="email" class="form-label">Email address</label>
-        <input id="email" v-model="email" type="input" class="form-control" />
-        {{ email }}
+        <input id="email" v-model="refs.email.value" type="input" class="form-control" />
+        {{ refs.email }}
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
-        <input id="password" v-model="password" type="password" class="form-control" />
+        <input id="password" v-model="refs.password.value" type="password" class="form-control" />
       </div>
       <div class="mb-3 form-check">
-        <input id="check" v-model="readMe" type="checkbox" class="form-check-input" />
+        <input id="check" v-model="refs.readMe.value" type="checkbox" class="form-check-input" />
         <label class="form-check-label" for="check">remember me</label>
+      </div>
+      <div class="mb-3">
+        <label for="child" class="form-label">child test</label>
+        <input id="child" v-model="refs.children.child1.value" type="input" class="form-control" />
       </div>
       <button type="submit" class="btn btn-primary" @click.prevent="handleClick()">Submit</button>
     </form>
@@ -37,10 +41,10 @@ export default defineComponent({
     console.log(form)
 
     function handleClick() {
-      console.log(form.value.value)
+      console.log(form.values.value)
     }
 
-    return { ...form.refs, handleClick }
+    return { refs: form.refs, handleClick }
   },
 })
 </script>
