@@ -31,12 +31,13 @@ export default defineComponent({
       email: { value: '' },
       password: { value: '' },
       readMe: { value: false },
+      children: { child1: { value: '' } },
     })
+
+    console.log(form)
 
     function handleClick() {
       console.log(form.value.value)
-
-      console.log(form)
     }
 
     return { ...form.refs, handleClick }

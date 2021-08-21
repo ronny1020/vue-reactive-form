@@ -1,4 +1,4 @@
-import { InputBuilder, InputValueType } from '@/interfaces/formBuilder'
+import { InputBuilder, InputValueType } from '@/interfaces/form'
 import { customRef, Ref } from 'vue'
 
 function createFormControlRef<T extends InputValueType>(defaultValue: T): Ref<T> {

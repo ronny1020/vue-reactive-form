@@ -5,7 +5,9 @@ export interface InputBuilder {
   value: InputValueType
 }
 
-export type FormBuilder = Record<string, InputBuilder>
+export type FormBuilder = {
+  [key: string]: InputBuilder | FormBuilder
+}
 
 export type FormValue<T extends FormBuilder> = {
   [K in keyof T]: T[K]['value']
