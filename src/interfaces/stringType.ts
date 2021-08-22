@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export type AvailableType =
+export type AvailableStringType =
   | 'boolean'
   | 'number'
   | 'string'
@@ -8,7 +8,7 @@ export type AvailableType =
   | 'string[]'
   | 'any'
 
-export type TypeFromString<T extends AvailableType> = T extends 'boolean'
+export type TypeFromString<T extends AvailableStringType> = T extends 'boolean'
   ? boolean
   : T extends 'number'
   ? number
@@ -23,3 +23,5 @@ export type TypeFromString<T extends AvailableType> = T extends 'boolean'
   : T extends 'any'
   ? any
   : never
+
+export type AvailableType = TypeFromString<AvailableStringType>

@@ -4,7 +4,7 @@
       <div class="mb-3">
         <label for="email" class="form-label">Email address</label>
         <input id="email" v-model="form.refs.email.value" type="input" class="form-control" />
-        {{ form.refs.email }}
+        has error: {{ form.errors.value.email.required ? 'Yes' : 'No' }}
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
@@ -40,14 +40,19 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import FormGroup from '@/index'
+import FormGroup, { requiredValidator } from '@/index'
 
 export default defineComponent({
   name: 'App',
 
   setup() {
     const form = new FormGroup({
-      email: { type: 'string', defaultValue: 'test@example.com' },
+      email: {
+        type: 'string',
+        defaultValue: 'test@example.com',
+        validators: [requiredValidator()],
+      },
+
       password: { type: 'string' },
       readMe: { type: 'boolean' },
       children: { child1: { type: 'string' } },

@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 
 import { computed, ComputedRef } from 'vue'
-import { FormBuilder, FormRefs, FormValue, InputBuilder } from '../interfaces/form'
+import { FormBuilder, FormErrors, FormRefs, FormValue, InputBuilder } from '../interfaces/form'
 import FormControl from './formControl'
 
 type FormControls<T> = {
@@ -42,6 +42,13 @@ export default class FormGroup<T extends FormBuilder> {
 
   dirty: ComputedRef<boolean> = computed(() =>
     Object.values(this.controls).some((control) => control.Dirty)
+  )
+
+  errors: ComputedRef<FormErrors<T>> = computed(
+    () =>
+      Object.fromEntries(
+        Object.entries(this.controls).map(([key, control]) => [key, control.errors.value])
+      ) as FormErrors<T>
   )
 
   constructor(private formBuilders: T) {

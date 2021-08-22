@@ -1,11 +1,20 @@
-import { InputBuilder, InputValueType } from '@/interfaces/form'
 import { TypeFromString } from '@/interfaces/stringType'
-import { customRef, ref, Ref } from 'vue'
+import { Validator } from '@/interfaces/validator'
+import { computed, customRef, ref, Ref } from 'vue'
+import { InputBuilder, InputValueType } from '../interfaces/form'
 
 export default class FormControl<T extends InputBuilder> {
   ref: Ref<TypeFromString<T['type']> | null>
 
   dirty = ref(false)
+
+  errors = computed(
+    () =>
+      this.inputBuilder.validators?.reduce(
+        (accumulator, validator: Validator) => ({ ...accumulator, ...validator(this.ref.value) }),
+        {} as Record<string, true>
+      ) || {}
+  )
 
   constructor(private inputBuilder: InputBuilder) {
     this.ref = this.createFormControlRef(inputBuilder.defaultValue)
