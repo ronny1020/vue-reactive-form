@@ -3,20 +3,35 @@
     <form>
       <div class="mb-3">
         <label for="email" class="form-label">Email address</label>
-        <input id="email" v-model="refs.email.value" type="input" class="form-control" />
-        {{ refs.email }}
+        <input id="email" v-model="form.refs.email.value" type="input" class="form-control" />
+        {{ form.refs.email }}
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
-        <input id="password" v-model="refs.password.value" type="password" class="form-control" />
+        <input
+          id="password"
+          v-model="form.refs.password.value"
+          type="password"
+          class="form-control"
+        />
       </div>
       <div class="mb-3 form-check">
-        <input id="check" v-model="refs.readMe.value" type="checkbox" class="form-check-input" />
+        <input
+          id="check"
+          v-model="form.refs.readMe.value"
+          type="checkbox"
+          class="form-check-input"
+        />
         <label class="form-check-label" for="check">remember me</label>
       </div>
       <div class="mb-3">
         <label for="child" class="form-label">child test</label>
-        <input id="child" v-model="refs.children.child1.value" type="input" class="form-control" />
+        <input
+          id="child"
+          v-model="form.refs.children.child1.value"
+          type="input"
+          class="form-control"
+        />
       </div>
       <button type="submit" class="btn btn-primary" @click.prevent="handleClick()">Submit</button>
     </form>
@@ -32,19 +47,17 @@ export default defineComponent({
 
   setup() {
     const form = new FormGroup({
-      email: { value: '' },
-      password: { value: '' },
-      readMe: { value: false },
-      children: { child1: { value: '' } },
+      email: { type: 'string', defaultValue: 'test@example.com' },
+      password: { type: 'string' },
+      readMe: { type: 'boolean' },
+      children: { child1: { type: 'string' } },
     })
-
-    console.log(form)
 
     function handleClick() {
       console.log(form.values.value)
     }
 
-    return { refs: form.refs, handleClick }
+    return { form, handleClick }
   },
 })
 </script>

@@ -15,7 +15,7 @@ type FormControls<T> = {
 function createFormControls<T extends FormBuilder>(formBuilder: T): FormControls<T> {
   return Object.fromEntries(
     Object.entries(formBuilder).map(([key, builder]) =>
-      'value' in builder
+      'type' in builder
         ? [key, new FormControl(builder as InputBuilder)]
         : [key, new FormGroup(builder)]
     )
