@@ -1,6 +1,6 @@
 import { WritableComputedRef } from '@vue/runtime-core'
 import { AvailableStringType, AvailableType, TypeFromString } from './stringType'
-import { Validator } from './validator'
+import { ValidationErrors, Validator } from './validator'
 
 export type InputValueType = string | number | boolean
 export type InputBuilder = {
@@ -31,7 +31,7 @@ export type FormRefs<T extends FormBuilder> = {
 
 export type FormErrors<T extends FormBuilder> = {
   [K in keyof T]: T[K] extends InputBuilder
-    ? Record<string, true>
+    ? ValidationErrors
     : T[K] extends FormBuilder
     ? FormErrors<T[K]>
     : never

@@ -4,7 +4,7 @@
       <div class="mb-3">
         <label for="email" class="form-label">Email address</label>
         <input id="email" v-model="form.refs.email.value" type="input" class="form-control" />
-        has error: {{ form.errors.value.email.required ? 'Yes' : 'No' }}
+        has error: {{ form.controls.email.errors.value.required ? 'Yes' : 'No' }}
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
@@ -33,7 +33,14 @@
           class="form-control"
         />
       </div>
-      <button type="submit" class="btn btn-primary" @click.prevent="handleClick()">Submit</button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        :disabled="!form.valid.value"
+        @click.prevent="handleClick()"
+      >
+        Submit
+      </button>
     </form>
   </div>
 </template>
@@ -59,7 +66,7 @@ export default defineComponent({
     })
 
     function handleClick() {
-      console.log(form.values.value)
+      console.log(form)
     }
 
     return { form, handleClick }

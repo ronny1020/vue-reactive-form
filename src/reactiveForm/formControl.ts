@@ -1,22 +1,22 @@
 import { TypeFromString } from '@/interfaces/stringType'
-import { Validator } from '@/interfaces/validator'
-import { computed, customRef, ref, Ref } from 'vue'
+import { ValidationErrors, Validator } from '@/interfaces/validator'
+import { computed, customRef, Ref } from 'vue'
 import { InputBuilder, InputValueType } from '../interfaces/form'
+import AbstractControl from './abstractControl'
 
-export default class FormControl<T extends InputBuilder> {
+export default class FormControl<T extends InputBuilder> extends AbstractControl {
   ref: Ref<TypeFromString<T['type']> | null>
-
-  dirty = ref(false)
 
   errors = computed(
     () =>
       this.inputBuilder.validators?.reduce(
         (accumulator, validator: Validator) => ({ ...accumulator, ...validator(this.ref.value) }),
-        {} as Record<string, true>
+        {} as ValidationErrors
       ) || {}
   )
 
   constructor(private inputBuilder: InputBuilder) {
+    super()
     this.ref = this.createFormControlRef(inputBuilder.defaultValue)
   }
 
@@ -31,9 +31,9 @@ export default class FormControl<T extends InputBuilder> {
         return value
       },
       set(newValue: ValueType) {
+        markAsDirty()
         value = newValue
 
-        markAsDirty()
         trigger()
       },
     }))

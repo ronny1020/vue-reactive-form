@@ -2,6 +2,7 @@
 
 import { computed, ComputedRef } from 'vue'
 import { FormBuilder, FormErrors, FormRefs, FormValue, InputBuilder } from '../interfaces/form'
+import AbstractControl from './abstractControl'
 import FormControl from './formControl'
 
 type FormControls<T> = {
@@ -22,7 +23,11 @@ function createFormControls<T extends FormBuilder>(formBuilder: T): FormControls
   )
 }
 
-export default class FormGroup<T extends FormBuilder> {
+function isEmptyObject(object: Record<string, unknown>): boolean {
+  return Object.keys(object).length === 0
+}
+
+export default class FormGroup<T extends FormBuilder> extends AbstractControl {
   controls: FormControls<T>
 
   refs: FormRefs<T>
@@ -41,17 +46,20 @@ export default class FormGroup<T extends FormBuilder> {
   )
 
   dirty: ComputedRef<boolean> = computed(() =>
-    Object.values(this.controls).some((control) => control.Dirty)
+    Object.values(this.controls).some((control: FormControl<InputBuilder>) => control.dirty)
   )
 
   errors: ComputedRef<FormErrors<T>> = computed(
     () =>
       Object.fromEntries(
-        Object.entries(this.controls).map(([key, control]) => [key, control.errors.value])
+        Object.entries(this.controls)
+          .map(([key, control]) => [key, control.errors.value])
+          .filter(([, errors]) => !isEmptyObject(errors))
       ) as FormErrors<T>
   )
 
   constructor(private formBuilders: T) {
+    super()
     this.controls = createFormControls(formBuilders)
 
     this.refs = Object.fromEntries(
