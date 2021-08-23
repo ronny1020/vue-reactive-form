@@ -7,11 +7,9 @@ export default abstract class AbstractControl {
 
   dirty = ref(false)
 
-  valid: ComputedRef<boolean> = computed(
-    (): boolean => this.dirty.value && !Object.keys(this.errors.value).length
-  )
+  valid: ComputedRef<boolean> = computed((): boolean => this.dirty.value && !this.errors.value)
 
   hasError(): boolean {
-    return !!Object.keys(this.errors.value).length
+    return !!this.errors.value
   }
 }

@@ -16,7 +16,7 @@ const emailValidator: ValidatorFactory = () => (value: AvailableType | null) => 
     return { email: 'email' }
   }
 
-  return {}
+  return null
 }
 
 export default emailValidator

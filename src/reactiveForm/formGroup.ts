@@ -23,10 +23,6 @@ function createFormControls<T extends FormBuilder>(formBuilder: T): FormControls
   )
 }
 
-function isEmptyObject(object: Record<string, unknown>): boolean {
-  return Object.keys(object).length === 0
-}
-
 export default class FormGroup<T extends FormBuilder> extends AbstractControl {
   controls: FormControls<T>
 
@@ -49,14 +45,18 @@ export default class FormGroup<T extends FormBuilder> extends AbstractControl {
     Object.values(this.controls).some((control: FormControl<InputBuilder>) => control.dirty)
   )
 
-  errors: ComputedRef<FormErrors<T>> = computed(
-    () =>
-      Object.fromEntries(
-        Object.entries(this.controls)
-          .map(([key, control]) => [key, control.errors.value])
-          .filter(([, errors]) => !isEmptyObject(errors))
-      ) as FormErrors<T>
-  )
+  errors: ComputedRef<FormErrors<T>> = computed(() => {
+    const formErrors = Object.fromEntries(
+      Object.entries(this.controls)
+        .map(([key, control]: [string, FormControl<InputBuilder> | FormGroup<FormBuilder>]) => [
+          key,
+          control.errors.value,
+        ])
+        .filter(([, errors]) => errors)
+    ) as FormErrors<T>
+
+    return Object.keys(formErrors).length ? formErrors : null
+  })
 
   constructor(private formBuilders: T) {
     super()

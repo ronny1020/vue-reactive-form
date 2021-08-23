@@ -6,7 +6,7 @@ const requiredValidator: ValidatorFactory = () => (value: AvailableType | null) 
     return { required: true }
   }
 
-  return {}
+  return null
 }
 
 export default requiredValidator

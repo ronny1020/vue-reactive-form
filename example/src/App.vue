@@ -4,7 +4,7 @@
       <div class="mb-3">
         <label for="email" class="form-label">Email address</label>
         <input id="email" v-model="form.refs.email.value" type="input" class="form-control" />
-        has error: {{ form.controls.email.errors.value.required ? 'Yes' : 'No' }}
+        has error: {{ form.controls.email.errors.value ? 'Yes' : 'No' }}
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
@@ -33,6 +33,8 @@
           class="form-control"
         />
       </div>
+      {{ form.errors }}
+      {{ form.valid }}
       <button
         type="submit"
         class="btn btn-primary"
@@ -47,7 +49,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import FormGroup, { requiredValidator } from '@/index'
+import FormGroup, { emailValidator, requiredValidator } from '@/index'
 
 export default defineComponent({
   name: 'App',
@@ -57,7 +59,7 @@ export default defineComponent({
       email: {
         type: 'string',
         defaultValue: 'test@example.com',
-        validators: [requiredValidator()],
+        validators: [requiredValidator(), emailValidator()],
       },
 
       password: { type: 'string' },

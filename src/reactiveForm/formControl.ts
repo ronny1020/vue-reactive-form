@@ -1,19 +1,21 @@
 import { TypeFromString } from '@/interfaces/stringType'
 import { ValidationErrors, Validator } from '@/interfaces/validator'
-import { computed, customRef, Ref } from 'vue'
+import { computed, ComputedRef, customRef, Ref } from 'vue'
 import { InputBuilder, InputValueType } from '../interfaces/form'
 import AbstractControl from './abstractControl'
 
 export default class FormControl<T extends InputBuilder> extends AbstractControl {
   ref: Ref<TypeFromString<T['type']> | null>
 
-  errors = computed(
-    () =>
+  errors: ComputedRef<ValidationErrors> = computed(() => {
+    const errors =
       this.inputBuilder.validators?.reduce(
         (accumulator, validator: Validator) => ({ ...accumulator, ...validator(this.ref.value) }),
         {} as ValidationErrors
       ) || {}
-  )
+
+    return Object.keys(errors).length ? errors : null
+  })
 
   constructor(private inputBuilder: InputBuilder) {
     super()
