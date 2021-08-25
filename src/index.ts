@@ -5,6 +5,8 @@ import { Validator, ValidatorFactory } from './interfaces/validator'
 import requiredValidator from './validators/requiredValidator'
 import emailValidator from './validators/emailValidator'
 import patternValidator from './validators/patternValidator'
+import maxLengthValidator from './validators/maxLengthValidator'
+import minLengthValidator from './validators/minLengthValidator'
 
 export default FormGroup
 export {
@@ -15,4 +17,6 @@ export {
   requiredValidator,
   emailValidator,
   patternValidator,
+  maxLengthValidator,
+  minLengthValidator,
 }
