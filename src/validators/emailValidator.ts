@@ -8,10 +8,6 @@ function isEmail(email: string): boolean {
 }
 
 const emailValidator: ValidatorFactory = () => (value: AvailableType | null) => {
-  if (value === null || value === undefined || value === '') {
-    return { required: true }
-  }
-
   if (!isEmail(value)) {
     return { email: 'email' }
   }

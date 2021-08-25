@@ -3,16 +3,11 @@ import { ValidatorFactory } from '../interfaces/validator'
 
 function patternCheck(regex: RegExp | string, value: string): boolean {
   const regularExpression: RegExp = typeof regex === 'string' ? new RegExp(regex) : regex
-
   return regularExpression.test(value)
 }
 
 const patternValidator: ValidatorFactory =
   (regex: RegExp | string) => (value: AvailableType | null) => {
-    if (value === null || value === undefined || value === '') {
-      return { required: true }
-    }
-
     if (!patternCheck(regex, value)) {
       return { email: 'email' }
     }
