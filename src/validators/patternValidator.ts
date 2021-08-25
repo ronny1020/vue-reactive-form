@@ -9,7 +9,7 @@ function patternCheck(regex: RegExp | string, value: string): boolean {
 const patternValidator: ValidatorFactory =
   (regex: RegExp | string) => (value: AvailableType | null) => {
     if (!patternCheck(regex, value)) {
-      return { email: 'email' }
+      return { pattern: 'pattern' }
     }
 
     return null
