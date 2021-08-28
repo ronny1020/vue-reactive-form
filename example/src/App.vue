@@ -33,8 +33,9 @@
           class="form-control"
         />
       </div>
-      {{ form.errors }}
-      {{ form.valid }}
+
+      <button class="btn btn-primary me-3" @click.prevent="form.reset()">Reset</button>
+
       <button
         type="submit"
         class="btn btn-primary"

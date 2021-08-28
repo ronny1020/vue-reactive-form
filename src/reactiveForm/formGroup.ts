@@ -95,4 +95,10 @@ export default class FormGroup<T extends FormBuilder> extends AbstractControl {
       (control: FormControl<InputBuilder> | FormGroup<FormBuilder>) => control.markAsPristine()
     )
   }
+
+  reset(): void {
+    Object.values(this.controls).forEach(
+      (control: FormControl<InputBuilder> | FormGroup<FormBuilder>) => control.reset()
+    )
+  }
 }

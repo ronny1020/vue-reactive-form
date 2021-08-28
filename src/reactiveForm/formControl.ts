@@ -64,4 +64,9 @@ export default class FormControl<T extends InputBuilder> extends AbstractControl
   clearValidators(): void {
     this.validators.value = []
   }
+
+  reset(): void {
+    this.ref.value = this.inputBuilder.defaultValue ?? null
+    this.markAsPristine()
+  }
 }
