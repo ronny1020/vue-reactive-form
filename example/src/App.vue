@@ -65,7 +65,7 @@ export default defineComponent({
 
       password: { type: 'string' },
       readMe: { type: 'boolean' },
-      children: { child1: { type: 'string' } },
+      children: new FormGroup({ child1: { type: 'string' } }),
     })
 
     function handleClick() {

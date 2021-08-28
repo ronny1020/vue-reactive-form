@@ -22,6 +22,6 @@ export type TypeFromString<T extends AvailableStringType> = T extends 'boolean'
   ? string[]
   : T extends 'any'
   ? any
-  : never
+  : any
 
 export type AvailableType = TypeFromString<AvailableStringType>

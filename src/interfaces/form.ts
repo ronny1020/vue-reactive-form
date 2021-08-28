@@ -1,38 +1,53 @@
+import type DynamicFormGroup from '@/reactiveForm/dynamicFormGroup'
+import type FormControl from '@/reactiveForm/formControl'
+import type FormGroup from '@/reactiveForm/formGroup'
 import { WritableComputedRef } from '@vue/runtime-core'
 import { AvailableStringType, AvailableType, TypeFromString } from './stringType'
 import { ValidationErrors, Validator } from './validator'
 
 export type InputValueType = string | number | boolean
 export type InputBuilder = {
-  type: AvailableStringType
+  type?: AvailableStringType
   defaultValue?: AvailableType
   validators?: Validator[]
 }
 
 export type FormBuilder = {
-  [key: string]: InputBuilder | FormBuilder
+  [key: string]: InputBuilder | FormGroup<FormBuilder> | DynamicFormGroup<FormBuilder>
+}
+
+export type FormControls<T> = {
+  [K in keyof T]: T[K] extends FormGroup<FormBuilder> | DynamicFormGroup<FormBuilder>
+    ? T[K]
+    : T[K] extends InputBuilder
+    ? FormControl<T[K]>
+    : never
 }
 
 export type FormValue<T extends FormBuilder> = {
-  [K in keyof T]: T[K] extends InputBuilder
+  [K in keyof T]: T[K] extends FormGroup<FormBuilder> | DynamicFormGroup<FormBuilder>
+    ? T[K]['values']
+    : T[K] extends InputBuilder
     ? TypeFromString<T[K]['type']>
-    : T[K] extends FormBuilder
-    ? T[K]['value']
     : never
+}
+
+export type DynamicFormRefs = {
+  [key: string]: WritableComputedRef<AvailableStringType> | DynamicFormRefs | unknown
 }
 
 export type FormRefs<T extends FormBuilder> = {
-  [K in keyof T]: T[K] extends InputBuilder
+  [K in keyof T]: T[K] extends FormGroup<FormBuilder> | DynamicFormGroup<FormBuilder>
+    ? T[K]['refs']
+    : T[K] extends InputBuilder
     ? WritableComputedRef<TypeFromString<T[K]['type']>>
-    : T[K] extends FormBuilder
-    ? FormRefs<T[K]>
-    : never
+    : unknown
 }
 
 export type FormErrors<T extends FormBuilder> = {
-  [K in keyof T]: T[K] extends InputBuilder
+  [K in keyof T]: T[K] extends FormGroup<FormBuilder> | DynamicFormGroup<FormBuilder>
+    ? T[K]['errors']
+    : T[K] extends InputBuilder
     ? ValidationErrors
-    : T[K] extends FormBuilder
-    ? FormErrors<T[K]>
     : never
 }
