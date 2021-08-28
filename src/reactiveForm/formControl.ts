@@ -1,15 +1,17 @@
 import { TypeFromString } from '@/interfaces/stringType'
 import { ValidationErrors, Validator } from '@/interfaces/validator'
-import { computed, ComputedRef, customRef, Ref } from 'vue'
+import { computed, ComputedRef, customRef, ref, Ref } from 'vue'
 import { InputBuilder, InputValueType } from '../interfaces/form'
 import AbstractControl from './abstractControl'
 
 export default class FormControl<T extends InputBuilder> extends AbstractControl {
   ref: Ref<TypeFromString<T['type']> | null>
 
+  validators: Ref<Validator[]> = ref([])
+
   errors: ComputedRef<ValidationErrors> = computed(() => {
     const errors =
-      this.inputBuilder.validators?.reduce(
+      this.validators.value?.reduce(
         (accumulator, validator: Validator) => ({ ...accumulator, ...validator(this.ref.value) }),
         {} as ValidationErrors
       ) || {}
@@ -20,6 +22,8 @@ export default class FormControl<T extends InputBuilder> extends AbstractControl
   constructor(private inputBuilder: InputBuilder) {
     super()
     this.ref = this.createFormControlRef(inputBuilder.defaultValue)
+
+    this.validators = ref(this.inputBuilder.validators ?? [])
   }
 
   createFormControlRef<ValueType extends InputValueType>(defaultValue: ValueType): Ref<ValueType> {
@@ -47,5 +51,17 @@ export default class FormControl<T extends InputBuilder> extends AbstractControl
 
   markAsPristine(): void {
     this.dirty.value = false
+  }
+
+  appendValidators(validator: Validator): void {
+    this.validators.value.push(validator)
+  }
+
+  setValidator(validator: Validator): void {
+    this.validators.value = [validator]
+  }
+
+  clearValidators(): void {
+    this.validators.value = []
   }
 }
