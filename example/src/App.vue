@@ -50,7 +50,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import FormGroup, { emailValidator, requiredValidator } from '@/index'
+import FormGroup, { emailValidator, requiredValidator } from '../../src'
 
 export default defineComponent({
   name: 'App',

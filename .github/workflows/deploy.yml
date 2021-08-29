@@ -1,0 +1,38 @@
+name: Deploy Project
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+          check-latest: true
+      - run: npm install
+        env:
+          CI: true
+
+      - name: build:demo
+        run: |-
+          npm run build:demo
+
+      - name: Commit and push if changed
+        run: |-
+          cd dist
+          git init
+          git config --global user.email "ronny1020@gmail.com"
+          git config --global user.name "deploy-bot"
+          git add -A
+          git commit -m "deploy" || exit 0
+          git push -f https://ronny1020:${{ secrets.GITHUB_TOKEN }}@github.com/ronny1020/vue-reactive-form.git master:gh-pages
