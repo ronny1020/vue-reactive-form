@@ -7,7 +7,7 @@
     "build": "tsc --project tsconfig.production.json",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint example/src/** src/** --fix",
-    "build:demo": "vue-cli-service build --dest example/build_example"
+    "build:demo": "vue-cli-service build --dest build_example"
   },
   "files": [
     "build"
