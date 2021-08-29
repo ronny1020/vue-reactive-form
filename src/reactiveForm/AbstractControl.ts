@@ -1,6 +1,6 @@
-import { FormBuilder, FormErrors } from '@/interfaces/form'
-import { ValidationErrors } from '@/interfaces/validator'
 import { computed, ComputedRef, ref } from 'vue'
+import { FormBuilder, FormErrors } from '../interfaces/form'
+import { ValidationErrors } from '../interfaces/validator'
 
 export default abstract class AbstractControl {
   errors: ComputedRef<FormErrors<FormBuilder> | ValidationErrors>

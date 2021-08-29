@@ -1,7 +1,7 @@
-import type DynamicFormGroup from '@/reactiveForm/dynamicFormGroup'
-import type FormControl from '@/reactiveForm/formControl'
-import type FormGroup from '@/reactiveForm/formGroup'
 import { WritableComputedRef } from '@vue/runtime-core'
+import type DynamicFormGroup from '../reactiveForm/dynamicFormGroup'
+import type FormControl from '../reactiveForm/formControl'
+import type FormGroup from '../reactiveForm/formGroup'
 import { AvailableStringType, AvailableType, TypeFromString } from './stringType'
 import { ValidationErrors, Validator } from './validator'
 

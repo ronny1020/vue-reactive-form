@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 
-import createFormControls from '@/functions/createFormControls'
-import createFormRefs from '@/functions/createFormRefs'
+import createFormControls from '../functions/createFormControls'
+import createFormRefs from '../functions/createFormRefs'
 import { FormBuilder, FormControls, FormRefs } from '../interfaces/form'
 import AbstractFormGroup from './abstractFormGroup'
 

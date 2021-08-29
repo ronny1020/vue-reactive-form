@@ -1,6 +1,6 @@
-import { TypeFromString } from '@/interfaces/stringType'
-import { ValidationErrors, Validator } from '@/interfaces/validator'
 import { computed, ComputedRef, customRef, ref, Ref } from 'vue'
+import { TypeFromString } from '../interfaces/stringType'
+import { ValidationErrors, Validator } from '../interfaces/validator'
 import { InputBuilder, InputValueType } from '../interfaces/form'
 import AbstractControl from './abstractControl'
 
