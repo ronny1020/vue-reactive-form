@@ -1,29 +1,28 @@
 # vue-reactive-form
 
-## Project setup
-```
-yarn install
+A reactive form library, which can help manage form data.
+ It can be use all kind of Form UI
+
+## Install
+
+```bash
+npm i vue-reactive-form
 ```
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
+```bash
+yarn add vue-reactive-form
 ```
 
-### Run your unit tests
-```
-yarn test:unit
-```
+## Usage
 
-### Lints and fixes files
-```
-yarn lint
-```
+## Demo
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+[Demo](https://ronny1020.github.io/vue-reactive-form//)
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+MIT © [ronny1020](https://github.com/ronny1020)

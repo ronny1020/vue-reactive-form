@@ -1,21 +1,13 @@
 {
-  "name": "vue-reactive-form",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "tsc --project tsconfig.production.json",
-    "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint example/src/** src/** --fix",
-    "build:demo": "vue-cli-service build --dest build_example"
+  "author": "ronny1020",
+  "bugs": {
+    "url": "https://github.com/ronny1020/vue-reactive-form/issues"
   },
-  "files": [
-    "build"
-  ],
   "dependencies": {
     "core-js": "^3.6.5",
     "vue": "^3.2.4"
   },
+  "description": "A reactive form library, which can help manage form data. It can be use all kind of Form UI",
   "devDependencies": {
     "@types/jest": "^24.0.19",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
@@ -42,15 +34,45 @@
     "vue-jest": "^5.0.0-0"
   },
   "directories": {
-    "example": "example"
+    "example": "example",
+    "test": "tests"
   },
+  "files": [
+    "build"
+  ],
   "gitHooks": {
     "pre-commit": "lint-staged"
   },
+  "homepage": "https://github.com/ronny1020/vue-reactive-form#readme",
+  "keywords": [
+    "vue",
+    "vue-reactive-form",
+    "reactive-form",
+    "form",
+    "form-control",
+    "form-group",
+    "form-input",
+    "form-validator"
+  ],
+  "license": "MIT",
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
       "vue-cli-service lint",
       "git add"
     ]
-  }
+  },
+  "main": "build/index.js",
+  "name": "vue-reactive-form",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ronny1020/vue-reactive-form.git"
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.production.json",
+    "build:demo": "vue-cli-service build --dest build_example",
+    "lint": "vue-cli-service lint example/src/** src/** --fix",
+    "serve": "vue-cli-service serve",
+    "test:unit": "vue-cli-service test:unit"
+  },
+  "version": "0.0.0"
 }
