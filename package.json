@@ -52,7 +52,10 @@
     "form-control",
     "form-group",
     "form-input",
-    "form-validator"
+    "form-validator",
+    "vue3",
+    "typescript",
+    "Composition API"
   ],
   "license": "MIT",
   "lint-staged": {
