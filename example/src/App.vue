@@ -76,5 +76,3 @@ export default defineComponent({
   },
 })
 </script>
-
-function handleClick() { throw new Error('Function not implemented.') }
