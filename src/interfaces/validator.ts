@@ -5,6 +5,6 @@ export type ValidationErrors = {
   [key: string]: any
 }
 
-export type Validator = (value: AvailableType) => ValidationErrors
+export type Validator = (value: AvailableType) => ValidationErrors | null
 
 export type ValidatorFactory = (...args: any[]) => Validator

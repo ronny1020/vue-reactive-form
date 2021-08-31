@@ -26,7 +26,9 @@ export default class FormControl<T extends InputBuilder> extends AbstractControl
     this.validators = ref(this.inputBuilder.validators ?? [])
   }
 
-  createFormControlRef<ValueType extends InputValueType>(defaultValue: ValueType): Ref<ValueType> {
+  private createFormControlRef<ValueType extends InputValueType>(
+    defaultValue: ValueType
+  ): Ref<ValueType> {
     let value: ValueType = defaultValue ?? null
 
     const markAsDirty = this.markAsDirty.bind(this)
@@ -57,8 +59,8 @@ export default class FormControl<T extends InputBuilder> extends AbstractControl
     this.validators.value.push(validator)
   }
 
-  setValidator(validator: Validator): void {
-    this.validators.value = [validator]
+  setValidator(validator: Validator | Validator[]): void {
+    this.validators.value = Array.isArray(validator) ? validator : [validator]
   }
 
   clearValidators(): void {
