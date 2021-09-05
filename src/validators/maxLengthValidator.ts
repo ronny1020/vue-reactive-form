@@ -1,5 +1,5 @@
-import { AvailableType } from '@/interfaces/stringType'
-import { ValidatorFactory } from '@/interfaces/validator'
+import { AvailableType } from '../interfaces/stringType'
+import { ValidatorFactory } from '../interfaces/validator'
 
 const maxLengthValidator: ValidatorFactory = (length: number) => (value: AvailableType | null) => {
   if (value.length > length) {

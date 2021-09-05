@@ -3,7 +3,7 @@
     "allowJs": true,
     "declaration": true,
     "jsx": "preserve",
-    "target": "ESNEXT",       
+    "target": "ESNEXT",
     "importHelpers": true,
     "moduleResolution": "node",
     "skipLibCheck": true,
@@ -11,23 +11,13 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
-    "types": [
-      "webpack-env",
-      "jest"
-    ],
+    "types": ["webpack-env", "jest"],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ],  
-     "outDir": "./build",
-     "importsNotUsedAsValues": "preserve"
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
+    "outDir": "./build",
+    "importsNotUsedAsValues": "preserve"
   },
   "include": [
     "src/**/*.ts",
@@ -37,12 +27,10 @@
     "tests/**/*.tsx",
     "example/**/*.ts",
     "example/**/*.tsx",
-    "example/**/*.vue",    
+    "example/**/*.vue"
   ],
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": ["node_modules"],
   "directories": {
     "example": "example"
-  },
+  }
 }
