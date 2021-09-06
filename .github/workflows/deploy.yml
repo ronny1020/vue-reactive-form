@@ -23,6 +23,10 @@ jobs:
         env:
           CI: true
 
+      - name: build vue-reactive-form package
+        run: |-
+          npm run build
+
       - name: build:demo
         run: |-
           npm run build:demo
