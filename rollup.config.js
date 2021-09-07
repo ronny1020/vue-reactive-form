@@ -20,9 +20,6 @@ export default [
       },
     ],
     external: ['vue'],
-    globals: {
-      vue: 'vue',
-    },
     watch: {
       include: 'src/**',
     },

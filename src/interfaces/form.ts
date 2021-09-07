@@ -1,4 +1,4 @@
-import { WritableComputedRef } from '@vue/runtime-core'
+import { Ref } from '@vue/runtime-core'
 import type DynamicFormGroup from '../reactiveForm/dynamicFormGroup'
 import type FormControl from '../reactiveForm/formControl'
 import type FormGroup from '../reactiveForm/formGroup'
@@ -33,14 +33,14 @@ export type FormValue<T extends FormBuilder> = {
 }
 
 export type DynamicFormRefs = {
-  [key: string]: WritableComputedRef<AvailableStringType> | DynamicFormRefs | unknown
+  [key: string]: Ref<AvailableStringType> | DynamicFormRefs | unknown
 }
 
 export type FormRefs<T extends FormBuilder> = {
   [K in keyof T]: T[K] extends FormGroup<FormBuilder> | DynamicFormGroup<FormBuilder>
     ? T[K]['refs']
     : T[K] extends InputBuilder
-    ? WritableComputedRef<TypeFromString<T[K]['type']>>
+    ? Ref<TypeFromString<T[K]['type']>>
     : unknown
 }
 
