@@ -14,16 +14,15 @@ export default [
       {
         file: pkg.main,
         name: 'vueReactiveForm',
-        format: 'umd',
+        format: 'es',
         sourcemap: true,
         exports: 'named',
-        globals: {
-          vue: 'vue',
-        },
       },
-      { file: pkg.module, format: 'es', sourcemap: true, exports: 'named' },
     ],
-    external: [Object.keys(pkg.dependencies)],
+    external: ['vue'],
+    globals: {
+      vue: 'vue',
+    },
     watch: {
       include: 'src/**',
     },
