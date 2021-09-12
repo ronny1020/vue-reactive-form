@@ -15,15 +15,19 @@ export interface FormGroupGenericType {
 }
 
 export type FormBuilder<T extends FormGroupGenericType> = {
-  [K in keyof T]: T[K] extends AvailableType
-    ? InputBuilder<T[K]> | T[K]
+  [K in keyof T]: T[K] extends undefined
+    ? undefined
+    : T[K] extends AvailableType | undefined
+    ? InputBuilder<T[K]> | T[K] | null
     : T[K] extends FormGroupGenericType
     ? FormBuilder<T[K]> | FormGroup<T[K]>
     : never
 }
 
 export type FormControls<T extends FormGroupGenericType> = {
-  [K in keyof T]: T[K] extends AvailableType
+  [K in keyof T]: T[K] extends undefined
+    ? undefined
+    : T[K] extends AvailableType
     ? FormControl<T[K]>
     : T[K] extends FormGroupGenericType
     ? FormGroup<T[K]>
@@ -33,7 +37,9 @@ export type FormControls<T extends FormGroupGenericType> = {
 }
 
 export type FormRefs<T extends FormGroupGenericType> = {
-  [K in keyof T]: T[K] extends AvailableType
+  [K in keyof T]: T[K] extends undefined
+    ? undefined
+    : T[K] extends AvailableType
     ? Ref<T[K]>
     : T[K] extends FormGroupGenericType
     ? FormGroup<T[K]>['refs']
