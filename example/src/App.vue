@@ -55,7 +55,7 @@ export default defineComponent({
 
       password: null,
       readMe: null,
-      children: { child1: null },
+      children: { child1: "I'm child1" },
     })
 
     const {

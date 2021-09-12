@@ -1,7 +1,12 @@
 # vue-reactive-form
 
 A reactive form library, which can help manage form data.
-It can be use all kind of Form UI
+It can be use all kind of Form UI.
+Besides, It uses TypeScript generics to manage the types of data.
+
+## Warning
+
+This is only supported in Vue3 with composition API.
 
 ## Install
 
@@ -54,7 +59,7 @@ yarn add vue-reactive-form
       <button
         type="submit"
         class="btn btn-primary"
-        :disabled="!formGroup.valid.value"
+        :disabled="!formGroup.valid"
         @click.prevent="handleClick()"
       >
         Submit
@@ -75,16 +80,20 @@ export default defineComponent({
   name: 'App',
 
   setup() {
-    const formGroup = new FormGroup({
+    const formGroup = new FormGroup<{
+      email: string
+      password: string
+      readMe?: boolean
+      children: { child1: string }
+    }>({
       email: {
-        type: 'string',
         defaultValue: 'test@example.com',
         validators: [requiredValidator(), emailValidator()],
       },
 
-      password: { type: 'string' },
-      readMe: { type: 'boolean' },
-      children: new FormGroup({ child1: {} }),
+      password: null,
+      readMe: null,
+      children: { child1: null },
     })
 
     const {
@@ -95,7 +104,7 @@ export default defineComponent({
     } = formGroup.refs
 
     function handleClick() {
-      console.log(formGroup)
+      console.log({ formGroup, values: formGroup.values.value })
     }
 
     return { email, password, readMe, child1, formGroup, handleClick }
@@ -121,32 +130,32 @@ PS. I use Bootstrap CDN for this demo page. However, It's not required to use wi
 
 This is used to defined the input reference, which will be used in the fallowing FormGroup.
 
-| Property     | type                  | required | default | description                                                  |
-| ------------ | --------------------- | -------- | ------- | ------------------------------------------------------------ |
-| type         | `AvailableStringType` | false    | `'any'` | defining type                                                |
-| defaultValue | `AvailableType`       | false    | `null`  | default value                                                |
-| validators   | `Validator[]`         | false    | `[]`    | Validators for the input, there are details in the fallowing |
+| Property     | type            | required | default | description                                                  |
+| ------------ | --------------- | -------- | ------- | ------------------------------------------------------------ |
+| defaultValue | `AvailableType` | false    | `null`  | default value                                                |
+| validators   | `Validator[]`   | false    | `[]`    | Validators for the input, there are details in the fallowing |
 
 ```typescript
-type AvailableType =
-  | boolean
-  | number
-  | string
-  | boolean[]
-  | number[]
-  | string[]
-  | any
+type AvailableType = boolean | number | string | boolean[] | number[] | string[]
 ```
+
+AvailableType can also use as InputBuilder, which will stand for the defaultValue without validators.
 
 #### **FormBuilder**
 
 It's a Object with keys and values, and value could be the Fallowing types.
 
 - [InputBuilder](#inputbuilder)
-- [FormGroup](#formgroup)
-- [DynamicFormGroup](#dynamicformgroup)
 
-If value is a InputBuilder, it will create a [FormControl](#formcontrol).
+This will create a FormControl as the control of created FormGroup.
+
+- [FormGroup](#formgroup)
+
+This will create a FormGroup as the control of created FormGroup.
+
+- [FormBuilder](#formbuilder)
+
+This will use this FormGroup as the control of created FormGroup.
 
 ---
 
@@ -228,13 +237,17 @@ It's false by default, after changing the value of the ref it would be marked as
 
   Reset the value, dirty and the errors.
 
-#### **AbstractFormGroup**
+#### **FormGroup**
 
-This is a abstract form group class, It's the prototype of FormGroup and DynamicFormGroup.
+The main class of this package. It's used to create a form group with not only inputs but also other form groups.
 
-It's can't be used directly.
+It's also the default export of this package.
 
-However, it's shared some properties and methods with FormGroup and DynamicFormGroup.
+To create a form group, you can use [FormBuilder](#formbuilder) object.
+
+TypeScript generics is used to define the mapped types of the form controls.
+
+The generic Type variables "T" is the type of the FormBuilder used to create the form group.
 
 - dirty
 
@@ -272,18 +285,6 @@ However, it's shared some properties and methods with FormGroup and DynamicFormG
 
   Reset the value, dirty and the errors of all the form controls.
 
-#### **FormGroup**
-
-The main class of this package. It's used to create a form group with not only inputs but also other form groups.
-
-It's also the default export of this package.
-
-To create a form group, you can use [FormBuilder](#formbuilder) object.
-
-TypeScript generics is used to define the mapped types of the form controls.
-
-The generic Type variables "T" is the type of the FormBuilder used to create the form group.
-
 - controls
 
   type : `FormControls<T>`
@@ -298,15 +299,7 @@ The generic Type variables "T" is the type of the FormBuilder used to create the
 
   It can be used in the V-model.
 
-#### **DynamicFormGroup**
-
-This is very similar with FormGroup, but it's used to create a form group with dynamic form controls.
-
-All the properties and methods of FormGroup are also available.
-
-However, since it's dynamic, TypeScript generics is not used to define the mapped types of the form controls.
-
-- appendFormControl(formBuilder)
+  - appendFormControl(formBuilder)
 
   args : `FormBuilder`
 
@@ -321,8 +314,6 @@ However, since it's dynamic, TypeScript generics is not used to define the mappe
   return : `void`
 
   Remove one or more form controls from the form group by the key of the property.
-
----
 
 ### Validator
 
