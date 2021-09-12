@@ -36,7 +36,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-import FormGroup, { emailValidator, requiredValidator } from '../../src'
+import FormGroup, { emailValidator, requiredValidator } from '../../build'
 
 export default defineComponent({
   name: 'App',

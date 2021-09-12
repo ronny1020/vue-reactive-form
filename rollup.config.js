@@ -4,6 +4,8 @@ import commonjs from '@rollup/plugin-commonjs'
 import sourceMaps from 'rollup-plugin-sourcemaps'
 import typescript from 'rollup-plugin-typescript2'
 import dts from 'rollup-plugin-dts'
+import copy from 'rollup-plugin-copy'
+import { terser } from 'rollup-plugin-terser'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pkg = require('./package.json')
@@ -30,6 +32,13 @@ export default [
       commonjs(),
       resolve(),
       sourceMaps(),
+      terser(),
+      copy({
+        targets: [
+          { src: 'README.md', dest: '.build' },
+          { src: 'package.json', dest: 'build' },
+        ],
+      }),
     ],
   },
   {

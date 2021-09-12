@@ -34,9 +34,11 @@
     "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.56.3",
+    "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-dts": "^4.0.0",
     "rollup-plugin-esbuild": "^4.5.0",
     "rollup-plugin-sourcemaps": "^0.6.3",
+    "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
     "ts-jest": "^26.5.3",
     "typescript": "^4.4.2",
@@ -84,8 +86,9 @@
     "build:demo": "vue-cli-service build --dest build_example",
     "lint": "vue-cli-service lint example/src/** src/** --fix",
     "serve": "vue-cli-service serve",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "publish:npm": "yarn build && cd build && yarn publish"
   },
-  "typings": "vue-reactive-form.d.ts",
+  "typings": "index.d.ts",
   "version": "0.0.5"
 }
