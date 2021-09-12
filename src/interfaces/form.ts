@@ -11,13 +11,11 @@ export type InputBuilder<T extends AvailableType> = {
 }
 
 export interface FormGroupGenericType {
-  [key: string]: AvailableType | FormGroupGenericType | FormGroup<FormGroupGenericType>
+  [key: string]: AvailableType | FormGroupGenericType | FormGroup<FormGroupGenericType> | undefined
 }
 
 export type FormBuilder<T extends FormGroupGenericType> = {
-  [K in keyof T]: T[K] extends undefined
-    ? undefined
-    : T[K] extends AvailableType | undefined
+  [K in keyof T]: T[K] extends AvailableType | undefined
     ? InputBuilder<T[K]> | T[K] | null
     : T[K] extends FormGroupGenericType
     ? FormBuilder<T[K]> | FormGroup<T[K]>
@@ -25,29 +23,25 @@ export type FormBuilder<T extends FormGroupGenericType> = {
 }
 
 export type FormControls<T extends FormGroupGenericType> = {
-  [K in keyof T]: T[K] extends undefined
-    ? undefined
-    : T[K] extends AvailableType
+  [K in keyof T]: T[K] extends AvailableType | undefined
     ? FormControl<T[K]>
     : T[K] extends FormGroupGenericType
     ? FormGroup<T[K]>
     : T[K] extends FormGroup<FormGroupGenericType>
     ? T[K]
-    : unknown
+    : never
 }
 
 export type FormRefs<T extends FormGroupGenericType> = {
-  [K in keyof T]: T[K] extends undefined
-    ? undefined
-    : T[K] extends AvailableType
+  [K in keyof T]: T[K] extends AvailableType | undefined
     ? Ref<T[K]>
     : T[K] extends FormGroupGenericType
     ? FormGroup<T[K]>['refs']
-    : unknown
+    : never
 }
 
 export type FormErrors<T extends FormGroupGenericType> = {
-  [K in keyof T]: T[K] extends AvailableType
+  [K in keyof T]: T[K] extends AvailableType | undefined
     ? ValidationErrors
     : T[K] extends FormGroupGenericType
     ? FormGroup<T[K]>['errors']
