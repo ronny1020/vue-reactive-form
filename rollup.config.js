@@ -35,7 +35,7 @@ export default [
       terser(),
       copy({
         targets: [
-          { src: 'README.md', dest: '.build' },
+          { src: 'README.md', dest: 'build' },
           { src: 'package.json', dest: 'build' },
         ],
       }),
