@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 
 import { AvailableType } from '@/interfaces/availableType'
-import { OptionalPropertiesObject, OptionalPropertyOf } from '@/interfaces/libs'
 import { ComputedRef, computed } from 'vue'
 import type {
   FormBuilder,
@@ -13,6 +12,15 @@ import type {
 } from '../interfaces/form'
 import FormControl from './formControl'
 import AbstractControl from './abstractControl'
+
+type OptionalPropertyOf<T extends Record<string, unknown>> = Exclude<
+  {
+    [K in keyof T]: T extends Record<K, T[K]> ? never : K
+  }[keyof T],
+  undefined
+>
+
+type OptionalPropertiesObject<T extends Record<string, unknown>> = Pick<T, OptionalPropertyOf<T>>
 
 function isInputBuilder(
   builder: FormBuilder<FormGroupGenericType> | InputBuilder<AvailableType>
@@ -33,22 +41,6 @@ function isInputBuilder(
   return false
 }
 
-function createFormControls<T extends FormGroupGenericType>(
-  formBuilder: FormBuilder<T>
-): FormControls<T> {
-  return Object.fromEntries(
-    Object.entries(formBuilder).map(([key, builder]) => {
-      if (builder instanceof FormGroup) {
-        return [key, builder]
-      }
-      if (isInputBuilder(builder)) {
-        return [key, new FormControl(builder)]
-      }
-      return [key, new FormGroup(builder)]
-    })
-  ) as FormControls<T>
-}
-
 function createFormRefs<T extends FormGroupGenericType>(controls: FormControls<T>): FormRefs<T> {
   return Object.fromEntries(
     Object.entries(controls).map(([key, control]: [string, FormControls<T>]) => {
@@ -60,7 +52,14 @@ function createFormRefs<T extends FormGroupGenericType>(controls: FormControls<T
 export default class FormGroup<T extends FormGroupGenericType> extends AbstractControl {
   controls: FormControls<T>
 
+  private removedFormControls: FormControls<Partial<OptionalPropertiesObject<T>>> =
+    {} as FormControls<Partial<OptionalPropertiesObject<T>>>
+
   refs: FormRefs<T>
+
+  private removedRefs: FormRefs<Partial<OptionalPropertiesObject<T>>> = {} as FormRefs<
+    Partial<OptionalPropertiesObject<T>>
+  >
 
   values: ComputedRef<T> = computed(
     () =>
@@ -77,7 +76,7 @@ export default class FormGroup<T extends FormGroupGenericType> extends AbstractC
 
   constructor(private formBuilder: FormBuilder<T>) {
     super()
-    this.controls = createFormControls<T>(formBuilder)
+    this.controls = this.createFormControls<T>(formBuilder)
     this.refs = createFormRefs(this.controls)
   }
 
@@ -120,8 +119,34 @@ export default class FormGroup<T extends FormGroupGenericType> extends AbstractC
     )
   }
 
+  private createFormControls<GenericType extends FormGroupGenericType>(
+    formBuilder: FormBuilder<GenericType>
+  ): FormControls<GenericType> {
+    return Object.fromEntries(
+      Object.entries(formBuilder).map(([key, builder]) => {
+        if (this.removedFormControls[key]) {
+          const formControl = this.removedFormControls[key]
+          if (formBuilder[key] && formBuilder[key].constructor === Object) {
+            formControl.ref.value = (formBuilder[key] as InputBuilder<AvailableType>).defaultValue
+          }
+          formControl.ref.value = formBuilder[key]
+
+          return [key, formControl]
+        }
+
+        if (builder instanceof FormGroup) {
+          return [key, builder]
+        }
+        if (isInputBuilder(builder)) {
+          return [key, new FormControl(builder)]
+        }
+        return [key, new FormGroup(builder)]
+      })
+    ) as FormControls<GenericType>
+  }
+
   appendFormControl(formBuilder: FormBuilder<OptionalPropertiesObject<T>>): void {
-    const newControls = createFormControls<OptionalPropertiesObject<T>>(formBuilder)
+    const newControls = this.createFormControls(formBuilder)
 
     this.controls = { ...this.controls, ...newControls }
     this.refs = { ...this.refs, ...createFormRefs(newControls) }
@@ -131,7 +156,10 @@ export default class FormGroup<T extends FormGroupGenericType> extends AbstractC
     const keys = Array.isArray(key) ? key : [key]
 
     keys.forEach((keyToRemove) => {
+      this.removedFormControls[keyToRemove] = this.controls[keyToRemove]
       delete this.controls[keyToRemove]
+
+      this.removedRefs[keyToRemove] = this.refs[keyToRemove]
       delete this.refs[keyToRemove]
     })
   }
