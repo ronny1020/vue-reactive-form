@@ -1,3 +1,4 @@
+import path from 'path'
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import sourceMaps from 'rollup-plugin-sourcemaps'
@@ -7,28 +8,34 @@ import dts from 'rollup-plugin-dts'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pkg = require('./package.json')
 
+const buildPath = path.resolve(__dirname, 'build')
+
+const dependencies = Object.keys(pkg.dependencies)
+
 export default [
   {
     input: 'src/index.ts',
     output: [
       {
-        file: pkg.main,
-        name: 'vueReactiveForm',
+        dir: buildPath,
         format: 'es',
+        preserveModules: true,
         sourcemap: true,
         exports: 'named',
       },
     ],
-    external: ['vue'],
-    watch: {
-      include: 'src/**',
-    },
-    plugins: [typescript(), commonjs(), resolve(), sourceMaps()],
+    external: dependencies,
+    plugins: [
+      typescript({ tsconfigOverride: { compilerOptions: { declaration: false } } }),
+      commonjs(),
+      resolve(),
+      sourceMaps(),
+    ],
   },
   {
     input: 'src/index.ts',
-    output: [{ file: pkg.typings, format: 'es' }],
-    external: [Object.keys(pkg.dependencies)],
+    output: [{ file: path.resolve(buildPath, pkg.typings), format: 'es' }],
+    external: dependencies,
     plugins: [dts()],
   },
 ]

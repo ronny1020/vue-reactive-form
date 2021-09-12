@@ -73,19 +73,19 @@
       "git add"
     ]
   },
-  "main": "build/vue-reactive-form.js",
+  "main": "vue-reactive-form.js",
   "name": "vue-reactive-form",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ronny1020/vue-reactive-form.git"
   },
   "scripts": {
-    "build": "rimraf build && tsc && rollup -c",
+    "build": "rimraf build && rollup -c",
     "build:demo": "vue-cli-service build --dest build_example",
     "lint": "vue-cli-service lint example/src/** src/** --fix",
     "serve": "vue-cli-service serve",
     "test:unit": "vue-cli-service test:unit"
   },
-  "typings": "build/vue-reactive-form.d.ts",
+  "typings": "vue-reactive-form.d.ts",
   "version": "0.0.5"
 }
