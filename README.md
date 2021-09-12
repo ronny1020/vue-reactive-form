@@ -1,7 +1,9 @@
 # vue-reactive-form
 
 A reactive form library, which can help manage form data.
+
 It can be use all kind of Form UI.
+
 Besides, It uses TypeScript generics to manage the types of data.
 
 ## Warning
