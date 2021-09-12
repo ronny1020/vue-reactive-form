@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 
-import { AvailableType } from '@/interfaces/availableType'
 import { ComputedRef, computed } from 'vue'
+import { AvailableType } from '../interfaces/availableType'
 import type {
   FormBuilder,
   FormControls,

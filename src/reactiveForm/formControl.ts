@@ -1,5 +1,5 @@
 import { computed, ComputedRef, customRef, ref, Ref } from 'vue'
-import { AvailableType } from '@/interfaces/availableType'
+import { AvailableType } from '../interfaces/availableType'
 import { ValidationErrors, Validator } from '../interfaces/validator'
 import { InputBuilder } from '../interfaces/form'
 import AbstractControl from './abstractControl'
