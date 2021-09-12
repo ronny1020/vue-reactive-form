@@ -1,4 +1,3 @@
-import { AvailableType } from '../interfaces/stringType'
 import { ValidatorFactory } from '../interfaces/validator'
 
 function isEmail(email: string): boolean {
@@ -7,8 +6,8 @@ function isEmail(email: string): boolean {
   return re.test(email)
 }
 
-const emailValidator: ValidatorFactory = () => (value: AvailableType | null) => {
-  if (!isEmail(value)) {
+const emailValidator: ValidatorFactory<string> = () => (value: string) => {
+  if (!value || !isEmail(value)) {
     return { email: 'email' }
   }
 

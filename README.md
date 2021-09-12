@@ -128,15 +128,6 @@ This is used to defined the input reference, which will be used in the fallowing
 | validators   | `Validator[]`         | false    | `[]`    | Validators for the input, there are details in the fallowing |
 
 ```typescript
-type AvailableStringType =
-  | 'boolean'
-  | 'number'
-  | 'string'
-  | 'boolean[]'
-  | 'number[]'
-  | 'string[]'
-  | 'any'
-
 type AvailableType =
   | boolean
   | number

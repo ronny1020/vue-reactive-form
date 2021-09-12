@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AvailableType } from './stringType'
+import { AvailableType } from './availableType'
 
 export type ValidationErrors = {
   [key: string]: any
 }
 
-export type Validator = (value: AvailableType) => ValidationErrors | null
+export type Validator<T extends AvailableType> = (value: T) => ValidationErrors | null
 
-export type ValidatorFactory = (...args: any[]) => Validator
+export type ValidatorFactory<T extends AvailableType> = (...args: any[]) => Validator<T>

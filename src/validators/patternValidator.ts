@@ -1,4 +1,3 @@
-import { AvailableType } from '../interfaces/stringType'
 import { ValidatorFactory } from '../interfaces/validator'
 
 function patternCheck(regex: RegExp | string, value: string): boolean {
@@ -6,9 +5,9 @@ function patternCheck(regex: RegExp | string, value: string): boolean {
   return regularExpression.test(value)
 }
 
-const patternValidator: ValidatorFactory =
-  (regex: RegExp | string) => (value: AvailableType | null) => {
-    if (!patternCheck(regex, value)) {
+const patternValidator: ValidatorFactory<string> =
+  (regex: RegExp | string) => (value: string | null) => {
+    if (!value || !patternCheck(regex, value)) {
       return { pattern: 'pattern' }
     }
 

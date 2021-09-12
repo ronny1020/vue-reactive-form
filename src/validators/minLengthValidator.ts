@@ -1,12 +1,12 @@
-import { AvailableType } from '../interfaces/stringType'
 import { ValidatorFactory } from '../interfaces/validator'
 
-const minLengthValidator: ValidatorFactory = (length: number) => (value: AvailableType | null) => {
-  if (length > value.length) {
-    return { minLength: length }
-  }
+const minLengthValidator: ValidatorFactory<string | number> =
+  (length: number) => (value: string | number | null) => {
+    if (!value || length > value.toString().length) {
+      return { minLength: length }
+    }
 
-  return null
-}
+    return null
+  }
 
 export default minLengthValidator

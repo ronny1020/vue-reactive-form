@@ -24,7 +24,7 @@
       <button
         type="submit"
         class="btn btn-primary"
-        :disabled="!formGroup.valid.value"
+        :disabled="!formGroup.valid"
         @click.prevent="handleClick()"
       >
         Submit
@@ -35,22 +35,27 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import FormGroup, { emailValidator, requiredValidator } from '../../build/vue-reactive-form'
+
+import FormGroup, { emailValidator, requiredValidator } from '../../src'
 
 export default defineComponent({
   name: 'App',
 
   setup() {
-    const formGroup = new FormGroup({
+    const formGroup = new FormGroup<{
+      email: string
+      password: string
+      readMe?: boolean
+      children: { child1: string }
+    }>({
       email: {
-        type: 'string',
         defaultValue: 'test@example.com',
         validators: [requiredValidator(), emailValidator()],
       },
 
-      password: { type: 'string' },
-      readMe: { type: 'boolean' },
-      children: new FormGroup({ child1: {} }),
+      password: null,
+      readMe: null,
+      children: { child1: null },
     })
 
     const {
@@ -61,7 +66,7 @@ export default defineComponent({
     } = formGroup.refs
 
     function handleClick() {
-      console.log(formGroup)
+      console.log({ formGroup, values: formGroup.values.value })
     }
 
     return { email, password, readMe, child1, formGroup, handleClick }

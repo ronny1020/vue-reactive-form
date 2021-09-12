@@ -1,53 +1,49 @@
+/* eslint-disable no-use-before-define */
 import { Ref } from '@vue/runtime-core'
-import type DynamicFormGroup from '../reactiveForm/dynamicFormGroup'
+import FormGroup from '../reactiveForm/formGroup'
 import type FormControl from '../reactiveForm/formControl'
-import type FormGroup from '../reactiveForm/formGroup'
-import { AvailableStringType, AvailableType, TypeFromString } from './stringType'
+import { AvailableType } from './availableType'
 import { ValidationErrors, Validator } from './validator'
 
-export type InputValueType = string | number | boolean
-export type InputBuilder = {
-  type?: AvailableStringType
-  defaultValue?: AvailableType
-  validators?: Validator[]
+export type InputBuilder<T extends AvailableType> = {
+  defaultValue?: T
+  validators?: Validator<T>[]
 }
 
-export type FormBuilder = {
-  [key: string]: InputBuilder | FormGroup<FormBuilder> | DynamicFormGroup<FormBuilder>
+export interface FormGroupGenericType {
+  [key: string]: AvailableType | FormGroupGenericType | FormGroup<FormGroupGenericType>
 }
 
-export type FormControls<T> = {
-  [K in keyof T]: T[K] extends FormGroup<FormBuilder> | DynamicFormGroup<FormBuilder>
-    ? T[K]
-    : T[K] extends InputBuilder
+export type FormBuilder<T extends FormGroupGenericType> = {
+  [K in keyof T]: T[K] extends AvailableType
+    ? InputBuilder<T[K]> | T[K]
+    : T[K] extends FormGroupGenericType
+    ? FormBuilder<T[K]> | FormGroup<T[K]>
+    : never
+}
+
+export type FormControls<T extends FormGroupGenericType> = {
+  [K in keyof T]: T[K] extends AvailableType
     ? FormControl<T[K]>
-    : never
-}
-
-export type FormValue<T extends FormBuilder> = {
-  [K in keyof T]: T[K] extends FormGroup<FormBuilder> | DynamicFormGroup<FormBuilder>
-    ? T[K]['values']
-    : T[K] extends InputBuilder
-    ? TypeFromString<T[K]['type']>
-    : never
-}
-
-export type DynamicFormRefs = {
-  [key: string]: Ref<AvailableStringType> | DynamicFormRefs | unknown
-}
-
-export type FormRefs<T extends FormBuilder> = {
-  [K in keyof T]: T[K] extends FormGroup<FormBuilder> | DynamicFormGroup<FormBuilder>
-    ? T[K]['refs']
-    : T[K] extends InputBuilder
-    ? Ref<TypeFromString<T[K]['type']>>
+    : T[K] extends FormGroupGenericType
+    ? FormGroup<T[K]>
+    : T[K] extends FormGroup<FormGroupGenericType>
+    ? T[K]
     : unknown
 }
 
-export type FormErrors<T extends FormBuilder> = {
-  [K in keyof T]: T[K] extends FormGroup<FormBuilder> | DynamicFormGroup<FormBuilder>
-    ? T[K]['errors']
-    : T[K] extends InputBuilder
+export type FormRefs<T extends FormGroupGenericType> = {
+  [K in keyof T]: T[K] extends AvailableType
+    ? Ref<T[K]>
+    : T[K] extends FormGroupGenericType
+    ? FormGroup<T[K]>['refs']
+    : unknown
+}
+
+export type FormErrors<T extends FormGroupGenericType> = {
+  [K in keyof T]: T[K] extends AvailableType
     ? ValidationErrors
+    : T[K] extends FormGroupGenericType
+    ? FormGroup<T[K]>['errors']
     : never
 }
