@@ -34,7 +34,6 @@
     "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.56.3",
-    "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-dts": "^4.0.0",
     "rollup-plugin-esbuild": "^4.5.0",
     "rollup-plugin-sourcemaps": "^0.6.3",
@@ -75,7 +74,7 @@
       "git add"
     ]
   },
-  "main": "vue-reactive-form.js",
+  "main": "build/index.js",
   "name": "vue-reactive-form",
   "repository": {
     "type": "git",
@@ -87,8 +86,8 @@
     "lint": "vue-cli-service lint example/src/** src/** --fix",
     "serve": "vue-cli-service serve",
     "test:unit": "vue-cli-service test:unit",
-    "publish:npm": "yarn build && cd build && yarn publish"
+    "publish:npm": "yarn build && yarn publish"
   },
-  "typings": "index.d.ts",
-  "version": "0.0.5"
+  "typings": "build/index.d.ts",
+  "version": "0.1.5"
 }
