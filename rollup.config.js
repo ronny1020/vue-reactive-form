@@ -27,7 +27,15 @@ export default [
     ],
     external: dependencies,
     plugins: [
-      typescript({ tsconfigOverride: { compilerOptions: { declaration: false } } }),
+      typescript({
+        tsconfigOverride: {
+          compilerOptions: {
+            declaration: false,
+            target: 'es5',
+          },
+          exclude: ['node_modules', 'example', 'tests'],
+        },
+      }),
       commonjs(),
       resolve(),
       sourceMaps(),

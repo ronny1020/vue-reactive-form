@@ -19,7 +19,16 @@
     "outDir": "./build",
     "importsNotUsedAsValues": "preserve"
   },
-  "include": ["src/**/*.ts"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "tests/**/*.tsx",
+    "example/**/*.ts",
+    "example/**/*.tsx",
+    "example/**/*.vue"
+  ],
   "exclude": ["node_modules"],
   "directories": {
     "example": "example"

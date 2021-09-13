@@ -5,6 +5,9 @@ import emailValidator from './validators/emailValidator'
 import patternValidator from './validators/patternValidator'
 import maxLengthValidator from './validators/maxLengthValidator'
 import minLengthValidator from './validators/minLengthValidator'
+import { AvailableType } from './interfaces/availableType'
+import { FormGroupGenericType, InputBuilder } from './interfaces/form'
+import { Validator, ValidatorFactory } from './interfaces/validator'
 
 export default FormGroup
 export {
@@ -14,4 +17,9 @@ export {
   patternValidator,
   maxLengthValidator,
   minLengthValidator,
+  AvailableType,
+  FormGroupGenericType,
+  InputBuilder,
+  Validator,
+  ValidatorFactory,
 }
