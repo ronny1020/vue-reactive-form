@@ -11,7 +11,7 @@ const pkg = require('./package.json')
 
 const buildPath = path.resolve(__dirname, 'build')
 
-const dependencies = Object.keys(pkg.dependencies)
+const dependencies = ['vue']
 
 export default [
   {
