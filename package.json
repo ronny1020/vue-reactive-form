@@ -89,5 +89,5 @@
     "publish:npm": "yarn build && yarn publish"
   },
   "typings": "build/index.d.ts",
-  "version": "0.1.13"
+  "version": "0.1.15"
 }
