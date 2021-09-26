@@ -1,7 +1,7 @@
 import FormGroup, { FormControl } from '../../src'
 
 describe('Formgroup', () => {
-  const testFormGroup = new FormGroup({
+  const testFormGroup = new FormGroup<{ test: string }>({
     test: 'test',
   })
 
