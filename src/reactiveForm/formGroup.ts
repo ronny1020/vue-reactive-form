@@ -12,6 +12,7 @@ import type {
 } from '../interfaces/form'
 import FormControl from './formControl'
 import AbstractControl from './abstractControl'
+import isObject from '../libs/isObject'
 
 type OptionalPropertyOf<T extends Record<string, unknown>> = Exclude<
   {
@@ -126,10 +127,12 @@ export default class FormGroup<T extends FormGroupGenericType> extends AbstractC
       Object.entries(formBuilder).map(([key, builder]) => {
         if (this.removedFormControls[key]) {
           const formControl = this.removedFormControls[key]
-          if (formBuilder[key] && formBuilder[key].constructor === Object) {
+          if (isObject(formBuilder[key])) {
             formControl.ref.value = (formBuilder[key] as InputBuilder<AvailableType>).defaultValue
           }
           formControl.ref.value = formBuilder[key]
+
+          delete this.removedFormControls[key]
 
           return [key, formControl]
         }

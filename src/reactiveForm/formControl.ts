@@ -3,6 +3,7 @@ import { AvailableType } from '../interfaces/availableType'
 import { ValidationErrors, Validator } from '../interfaces/validator'
 import { InputBuilder } from '../interfaces/form'
 import AbstractControl from './abstractControl'
+import isObject from '../libs/isObject'
 
 export default class FormControl<T extends AvailableType> extends AbstractControl {
   ref: Ref<T>
@@ -22,12 +23,12 @@ export default class FormControl<T extends AvailableType> extends AbstractContro
     return Object.keys(errors).length ? errors : null
   })
 
-  constructor(private inputBuilder: InputBuilder<T> | null) {
+  constructor(private inputBuilder: InputBuilder<T> | AvailableType | null) {
     super()
 
-    if (inputBuilder && inputBuilder.constructor === Object) {
-      this.ref = this.createFormControlRef(inputBuilder?.defaultValue || null)
-      this.validators = ref(this.inputBuilder?.validators ?? [])
+    if (isObject(inputBuilder)) {
+      this.ref = this.createFormControlRef(inputBuilder.defaultValue || null)
+      this.validators = ref(inputBuilder.validators ?? [])
       return
     }
     this.ref = this.createFormControlRef(inputBuilder as T)
@@ -73,7 +74,7 @@ export default class FormControl<T extends AvailableType> extends AbstractContro
   }
 
   reset(): void {
-    if (this.inputBuilder && this.inputBuilder.constructor === Object) {
+    if (isObject(this.inputBuilder)) {
       this.ref.value = this.inputBuilder?.defaultValue ?? null
     }
     this.ref.value = this.inputBuilder as T
