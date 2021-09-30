@@ -138,7 +138,15 @@ This is used to defined the input reference, which will be used in the fallowing
 | validators   | `Validator[]`   | false    | `[]`    | Validators for the input, there are details in the fallowing |
 
 ```typescript
-type AvailableType = boolean | number | string | boolean[] | number[] | string[]
+type AvailableType =
+  | boolean
+  | number
+  | string
+  | Date
+  | boolean[]
+  | number[]
+  | string[]
+  | Date[]
 ```
 
 AvailableType can also use as InputBuilder, which will stand for the defaultValue without validators.
