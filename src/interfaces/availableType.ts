@@ -1,1 +1,9 @@
-export type AvailableType = boolean | number | string | boolean[] | number[] | string[]
+export type AvailableType =
+  | boolean
+  | number
+  | string
+  | Date
+  | boolean[]
+  | number[]
+  | string[]
+  | Date[]
