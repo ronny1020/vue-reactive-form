@@ -82,6 +82,8 @@ module.exports = {
     'vue/v-for-delimiter-style': ['error', 'of'],
     '@typescript-eslint/no-unused-vars': 'error',
     'no-unused-vars': 'off',
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': ['error'],
   },
   overrides: [
     {
