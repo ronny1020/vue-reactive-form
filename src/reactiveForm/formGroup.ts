@@ -1,18 +1,10 @@
-/* eslint-disable no-use-before-define */
-
-import { ComputedRef, computed } from 'vue'
+/* eslint-disable @typescript-eslint/no-use-before-define */
+import { ComputedRef, computed, Ref } from 'vue'
 import { AvailableType } from '../interfaces/availableType'
-import type {
-  FormBuilder,
-  FormControls,
-  FormErrors,
-  FormGroupGenericType,
-  FormRefs,
-  InputBuilder,
-} from '../interfaces/form'
-import FormControl from './formControl'
+import FormControl, { InputBuilder } from './formControl'
 import AbstractControl from './abstractControl'
 import isObject from '../libs/isObject'
+import { ValidationErrors } from '@/interfaces/validator'
 
 type OptionalPropertyOf<T extends Record<string, unknown>> = Exclude<
   {
@@ -23,8 +15,46 @@ type OptionalPropertyOf<T extends Record<string, unknown>> = Exclude<
 
 type OptionalPropertiesObject<T extends Record<string, unknown>> = Pick<T, OptionalPropertyOf<T>>
 
+export type FormGroupControls<T extends FormGroupGenericType> = {
+  [K in keyof T]: T[K] extends AvailableType | undefined
+    ? FormControl<T[K]>
+    : T[K] extends FormGroupGenericType
+    ? FormGroup<T[K]>
+    : T[K] extends FormGroup<FormGroupGenericType>
+    ? T[K]
+    : never
+}
+
+export type FormGroupRefs<T extends FormGroupGenericType> = {
+  [K in keyof T]: T[K] extends AvailableType | undefined
+    ? Ref<T[K]>
+    : T[K] extends FormGroupGenericType
+    ? FormGroup<T[K]>['refs']
+    : never
+}
+
+export type FormGroupBuilder<T extends FormGroupGenericType> = {
+  [K in keyof T]: T[K] extends AvailableType | undefined
+    ? InputBuilder<T[K]> | T[K] | null
+    : T[K] extends FormGroupGenericType
+    ? FormGroupBuilder<T[K]> | FormGroup<T[K]>
+    : never
+}
+
+export interface FormGroupGenericType {
+  [key: string]: AvailableType | FormGroupGenericType | FormGroupGenericType[]
+}
+
+export type FormErrors<T extends FormGroupGenericType> = {
+  [K in keyof T]: T[K] extends AvailableType | undefined
+    ? ValidationErrors
+    : T[K] extends FormGroupGenericType
+    ? FormGroup<T[K]>['errors']
+    : never
+}
+
 function isInputBuilder(
-  builder: FormBuilder<FormGroupGenericType> | InputBuilder<AvailableType>
+  builder: FormGroupBuilder<FormGroupGenericType> | InputBuilder<AvailableType>
 ): builder is InputBuilder<AvailableType> {
   if (!builder) {
     return true
@@ -42,23 +72,25 @@ function isInputBuilder(
   return false
 }
 
-function createFormRefs<T extends FormGroupGenericType>(controls: FormControls<T>): FormRefs<T> {
+function createFormRefs<T extends FormGroupGenericType>(
+  controls: FormGroupControls<T>
+): FormGroupRefs<T> {
   return Object.fromEntries(
-    Object.entries(controls).map(([key, control]: [string, FormControls<T>]) => {
+    Object.entries(controls).map(([key, control]: [string, FormGroupControls<T>]) => {
       return control instanceof FormGroup ? [key, control.refs] : [key, control.ref]
     })
-  ) as FormRefs<T>
+  ) as FormGroupRefs<T>
 }
 
 export default class FormGroup<T extends FormGroupGenericType> extends AbstractControl {
-  controls: FormControls<T>
+  controls: FormGroupControls<T>
 
-  private removedFormControls: FormControls<Partial<OptionalPropertiesObject<T>>> =
-    {} as FormControls<Partial<OptionalPropertiesObject<T>>>
+  private removedFormControls: FormGroupControls<Partial<OptionalPropertiesObject<T>>> =
+    {} as FormGroupControls<Partial<OptionalPropertiesObject<T>>>
 
-  refs: FormRefs<T>
+  refs: FormGroupRefs<T>
 
-  private removedRefs: FormRefs<Partial<OptionalPropertiesObject<T>>> = {} as FormRefs<
+  private removedRefs: FormGroupRefs<Partial<OptionalPropertiesObject<T>>> = {} as FormGroupRefs<
     Partial<OptionalPropertiesObject<T>>
   >
 
@@ -75,15 +107,15 @@ export default class FormGroup<T extends FormGroupGenericType> extends AbstractC
       ) as T
   )
 
-  constructor(private formBuilder: FormBuilder<T>) {
+  dirty: ComputedRef<boolean> = computed(() => {
+    return Object.values(this.controls).some((control) => control.dirty.value)
+  })
+
+  constructor(private formGroupBuilder: FormGroupBuilder<T>) {
     super()
-    this.controls = this.createFormControls<T>(formBuilder)
+    this.controls = this.createFormControls<T>(formGroupBuilder)
     this.refs = createFormRefs(this.controls)
   }
-
-  dirty: ComputedRef<boolean> = computed(() =>
-    Object.values(this.controls).some((control: FormControls<T>) => control.dirty)
-  )
 
   errors: ComputedRef<FormErrors<T>> = computed(() => {
     const formErrors = Object.fromEntries(
@@ -121,16 +153,18 @@ export default class FormGroup<T extends FormGroupGenericType> extends AbstractC
   }
 
   private createFormControls<GenericType extends FormGroupGenericType>(
-    formBuilder: FormBuilder<GenericType>
-  ): FormControls<GenericType> {
+    formGroupBuilder: FormGroupBuilder<GenericType>
+  ): FormGroupControls<GenericType> {
     return Object.fromEntries(
-      Object.entries(formBuilder).map(([key, builder]) => {
+      Object.entries(formGroupBuilder).map(([key, builder]) => {
         if (this.removedFormControls[key]) {
           const formControl = this.removedFormControls[key]
-          if (isObject(formBuilder[key])) {
-            formControl.ref.value = (formBuilder[key] as InputBuilder<AvailableType>).defaultValue
+          if (isObject(formGroupBuilder[key])) {
+            formControl.ref.value = (
+              formGroupBuilder[key] as InputBuilder<AvailableType>
+            ).defaultValue
           }
-          formControl.ref.value = formBuilder[key]
+          formControl.ref.value = formGroupBuilder[key]
 
           delete this.removedFormControls[key]
 
@@ -145,11 +179,11 @@ export default class FormGroup<T extends FormGroupGenericType> extends AbstractC
         }
         return [key, new FormGroup(builder)]
       })
-    ) as FormControls<GenericType>
+    ) as FormGroupControls<GenericType>
   }
 
-  appendFormControl(formBuilder: FormBuilder<OptionalPropertiesObject<T>>): void {
-    const newControls = this.createFormControls(formBuilder)
+  appendFormControl(formGroupBuilder: FormGroupBuilder<OptionalPropertiesObject<T>>): void {
+    const newControls = this.createFormControls(formGroupBuilder)
 
     this.controls = { ...this.controls, ...newControls }
     this.refs = { ...this.refs, ...createFormRefs(newControls) }

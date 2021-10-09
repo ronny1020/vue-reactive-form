@@ -1,9 +1,14 @@
 import { computed, ComputedRef, customRef, ref, Ref } from 'vue'
 import { AvailableType } from '../interfaces/availableType'
 import { ValidationErrors, Validator } from '../interfaces/validator'
-import { InputBuilder } from '../interfaces/form'
+
 import AbstractControl from './abstractControl'
 import isObject from '../libs/isObject'
+
+export type InputBuilder<T extends AvailableType> = {
+  defaultValue?: T
+  validators?: Validator<T>[]
+}
 
 export default class FormControl<T extends AvailableType> extends AbstractControl {
   ref: Ref<T>
