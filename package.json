@@ -1,6 +1,6 @@
 {
   "name": "vue-reactive-form",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "description": "A reactive form library, which can help manage form data. It's suitable for all kinds of Form UI.",
   "author": "ronny1020",
   "scripts": {
