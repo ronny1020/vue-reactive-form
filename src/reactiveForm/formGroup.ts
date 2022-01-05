@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { ComputedRef, computed, Ref } from 'vue'
+import { ValidationErrors } from '../interfaces/validator'
 import { AvailableType } from '../interfaces/availableType'
 import FormControl, { InputBuilder } from './formControl'
 import AbstractControl from './abstractControl'
 import isObject from '../libs/isObject'
-import { ValidationErrors } from '@/interfaces/validator'
 
 type OptionalPropertyOf<T extends Record<string, unknown>> = Exclude<
   {
@@ -42,16 +42,16 @@ export type FormGroupBuilder<T extends FormGroupGenericType> = {
 }
 
 export interface FormGroupGenericType {
-  [key: string]: AvailableType | FormGroupGenericType | FormGroupGenericType[]
+  [key: string]: AvailableType | FormGroupGenericType | AvailableType[] | FormGroupGenericType[]
 }
 
-export type FormErrors<T extends FormGroupGenericType> = {
+export type FormErrors<T extends FormGroupGenericType> = ComputedRef<{
   [K in keyof T]: T[K] extends AvailableType | undefined
     ? ValidationErrors
     : T[K] extends FormGroupGenericType
-    ? FormGroup<T[K]>['errors']
+    ? FormGroup<T[K]>['errors']['value']
     : never
-}
+}>
 
 function isInputBuilder(
   builder: FormGroupBuilder<FormGroupGenericType> | InputBuilder<AvailableType>
@@ -117,7 +117,7 @@ export default class FormGroup<T extends FormGroupGenericType> extends AbstractC
     this.refs = createFormRefs(this.controls)
   }
 
-  errors: ComputedRef<FormErrors<T>> = computed(() => {
+  errors: FormErrors<T> = computed(() => {
     const formErrors = Object.fromEntries(
       Object.entries(this.controls)
         .map(
