@@ -82,7 +82,9 @@ export default class FormControl<T extends AvailableType> extends AbstractContro
     if (isObject(this.inputBuilder)) {
       this.ref.value = this.inputBuilder?.defaultValue ?? null
     }
-    this.ref.value = this.inputBuilder as T
+    this.ref.value = isObject(this.inputBuilder)
+      ? this.inputBuilder.defaultValue ?? null
+      : (this.inputBuilder as T)
 
     this.markAsPristine()
   }

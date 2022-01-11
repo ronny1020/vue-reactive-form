@@ -55,3 +55,19 @@ describe('FormControl Validator', () => {
     expect(testFormControl.valid.value).toBe(true)
   })
 })
+
+describe('reset FormControl', () => {
+  it('reset form with InputBuilder', () => {
+    const testFormControl = new FormControl<string>({ defaultValue: 'test' })
+    testFormControl.ref.value = 'test2'
+    testFormControl.reset()
+    expect(testFormControl.ref.value).toMatch('test')
+  })
+
+  it('reset form with default value', () => {
+    const testFormControl = new FormControl<string>('test')
+    testFormControl.ref.value = 'test2'
+    testFormControl.reset()
+    expect(testFormControl.ref.value).toMatch('test')
+  })
+})
